@@ -17,7 +17,7 @@ To install `mdview`, use pip:
 
 Or install directly from Git:
 
-    $ pip install git+https://github.com/guyru/mdview.git#egg=mdview
+    $ pip install git+https://github.com/vanten-s/mdview.git#egg=mdview
 
 
 ## Usage
