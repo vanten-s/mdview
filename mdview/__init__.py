@@ -104,14 +104,14 @@ def run():
     # HACK: There must be a better way select a random port
     port = random.randrange(1024, 2**16)
 
+    # HACK: In debug mode it will launch the browser with each reload.
+    # There is also a race condition on when the server is actually up.
+    subprocess.run(['surf', f"http://localhost:{port}/", "&"])
+
     # we explicitly turn of the reloader, as it currently causes multiple
     # browser windows to be opened.
     app.run(port=port, threaded=True, use_reloader=False)
     app._shutdown = True
-
-    # HACK: In debug mode it will launch the browser with each reload.
-    # There is also a race condition on when the server is actually up.
-    subprocess.run(['surf', f"http://localhost:{port}/"])
 
 if __name__ == '__main__':
     run()
