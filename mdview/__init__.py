@@ -3,8 +3,8 @@ import os.path
 import logging
 import random
 import time
-import webbrowser
 import markdown
+import subprocess
 
 from flask import Flask, Markup, render_template, Response
 
@@ -105,7 +105,7 @@ def run():
     port = random.randrange(1024, 2**16)
     # HACK: In debug mode it will launch the browser with each reload.
     # There is also a race condition on when the server is actually up.
-    webbrowser.open('http://localhost:%d/' % port)
+    subprocess.run(['surf', f"http://localhost:{port}/"])
 
     # we explicitly turn of the reloader, as it currently causes multiple
     # browser windows to be opened.
