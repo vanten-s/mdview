@@ -5,6 +5,9 @@ import random
 import time
 import markdown
 import subprocess
+import threading
+
+from os import getpid
 
 from flask import Flask, Markup, render_template, Response
 
@@ -12,6 +15,12 @@ __version__ = '0.1.0'
 
 #app = Flask(__name__)
 app = Flask('mdview')
+
+def open_surf(port):
+    # HACK: In debug mode it will launch the browser with each reload.
+    # There is also a race condition on when the server is actually up.
+    subprocess.run(['surf', f"http://localhost:{port}/"])
+    os.system(f"kill {getpid()}")
 
 @app.route('/')
 def index():
@@ -104,9 +113,9 @@ def run():
     # HACK: There must be a better way select a random port
     port = random.randrange(1024, 2**16)
 
-    # HACK: In debug mode it will launch the browser with each reload.
-    # There is also a race condition on when the server is actually up.
-    subprocess.run(['surf', f"http://localhost:{port}/", "&"])
+    thread = threading.Thread(target=open_surf, args=(port,))
+    thread.start()
+    print("Got here!")
 
     # we explicitly turn of the reloader, as it currently causes multiple
     # browser windows to be opened.
